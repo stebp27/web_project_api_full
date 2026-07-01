@@ -22,8 +22,16 @@ const validateURL = (value, helpers) => {
 
 const app = express();
 
-app.use(cors());
-app.options("*", cors());
+const allowedOrigins = [
+  "https://www.around19.mooo.com",
+  "http://www.around19.mooo.com",
+  "https://around19.mooo.com",
+  "http://around19.mooo.com",
+  "http://localhost:3000",
+];
+
+app.use(cors({ origin: allowedOrigins }));
+app.options("*", cors({ origin: allowedOrigins }));
 
 mongoose
   .connect("mongodb://localhost:27017/aroundb")
