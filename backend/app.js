@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const { PORT = 3000 } = process.env;
 const { login, createUser } = require("./controllers/users.js");
 const auth = require("./middlewares/auth.js");
@@ -20,6 +21,9 @@ const validateURL = (value, helpers) => {
 };
 
 const app = express();
+
+app.use(cors());
+app.options("*", cors());
 
 mongoose
   .connect("mongodb://localhost:27017/aroundb")
