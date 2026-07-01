@@ -31,7 +31,7 @@ const allowedOrigins = [
 ];
 
 app.use(cors({ origin: allowedOrigins }));
-app.options("*", cors({ origin: allowedOrigins }));
+//app.options("*", cors({ origin: allowedOrigins }));
 
 mongoose
   .connect("mongodb://localhost:27017/aroundb")
