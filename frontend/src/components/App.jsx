@@ -55,6 +55,15 @@ function App() {
         .catch((error) => {
           console.error(error);
         });
+
+      api
+        .getInitialCards()
+        .then((result) => {
+          setCards(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, [isLoggedIn]);
 
@@ -134,17 +143,6 @@ function App() {
       });
     })();
   };
-
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((result) => {
-        setCards(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   async function handleCardLike(card) {
     // Verifica una vez más si a esta tarjeta ya les has dado like
