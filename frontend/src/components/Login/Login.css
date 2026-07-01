@@ -1,0 +1,59 @@
+.login {
+  display: flex;
+  justify-content: center;
+}
+
+.login__content {
+  width: 358px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.login__title {
+  margin-top: 60px;
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 24px;
+}
+
+.login__form input {
+  background-color: #000000;
+  border: none;
+  border-bottom: 2px solid #cccccc;
+  color: #cccccc;
+  /*TODO By Figma padding-bottom should be 13px*/
+  padding: 5px 5px 10px;
+  margin-top: 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login__button-container {
+  margin-top: 216px;
+}
+
+.login__button-container button {
+  width: 100%;
+  border-radius: 2px;
+  background-color: white;
+  font-size: 18px;
+  color: black;
+  padding: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.login__signup {
+  color: white;
+  text-align: center;
+}
+
+.signup__link {
+  color: white;
+  text-decoration: none;
+}

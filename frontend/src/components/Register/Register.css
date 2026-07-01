@@ -1,0 +1,59 @@
+.register {
+  display: flex;
+  justify-content: center;
+}
+
+.register__content {
+  width: 358px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.register__title {
+  margin-top: 60px;
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 24px;
+}
+
+.register__form input {
+  background-color: #000000;
+  border: none;
+  border-bottom: 2px solid #cccccc;
+  color: #cccccc;
+  /*TODO By Figma padding-bottom should be 13px*/
+  padding: 5px 5px 10px;
+  margin-top: 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.register__button-container {
+  margin-top: 216px;
+}
+
+.register__button-container button {
+  width: 100%;
+  border-radius: 2px;
+  background-color: white;
+  font-size: 18px;
+  color: black;
+  padding: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.register__signin {
+  color: white;
+  text-align: center;
+}
+
+.signin__link {
+  color: white;
+  text-decoration: none;
+}
