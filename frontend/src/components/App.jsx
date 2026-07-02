@@ -15,7 +15,7 @@ import { getToken, saveToken } from "../utils/tokens";
 import Popup from "./Popup/Popup";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState({ name: "", about: "" });
   const [userLogin, setUserLogin] = useState({ email: "" });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(null);
@@ -49,7 +49,7 @@ function App() {
     if (isLoggedIn) {
       api
         .getUserInfo()
-        .then((data) => {
+        .then(({ data }) => {
           setCurrentUser(data);
         })
         .catch((error) => {
@@ -58,8 +58,8 @@ function App() {
 
       api
         .getInitialCards()
-        .then((result) => {
-          setCards(result);
+        .then(({ data }) => {
+          setCards(data);
         })
         .catch((error) => {
           console.log(error);
@@ -123,22 +123,22 @@ function App() {
     setPopup(null);
   }
 
-  const handleUpdateUser = (data) => {
+  const handleUpdateUser = (user) => {
     (async () => {
       await api
-        .setUserInfo(data)
-        .then((newData) => {
-          setCurrentUser(newData);
+        .setUserInfo(user)
+        .then(({ data }) => {
+          setCurrentUser(data);
           handleClosePopup();
         })
         .catch((error) => console.error(error));
     })();
   };
 
-  const handleUpdateAvatar = (data) => {
+  const handleUpdateAvatar = (link) => {
     (async () => {
-      await api.setUserAvatar(data).then((newData) => {
-        setCurrentUser(newData);
+      await api.setUserAvatar(link).then(({ data }) => {
+        setCurrentUser(data);
         handleClosePopup();
       });
     })();
@@ -146,15 +146,15 @@ function App() {
 
   async function handleCardLike(card) {
     // Verifica una vez más si a esta tarjeta ya les has dado like
-    const isLiked = card.isLiked;
+    const isLiked = card.likes.includes(currentUser._id);
 
     // Envía una solicitud a la API y obtén los datos actualizados de la tarjeta
     await api
       .changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
+      .then(({ data }) => {
         setCards((state) =>
           state.map((currentCard) =>
-            currentCard._id === card._id ? newCard : currentCard,
+            currentCard._id === card._id ? data : currentCard,
           ),
         );
       })
@@ -174,9 +174,9 @@ function App() {
       });
   }
 
-  async function handleAddPlaceSubmit(data) {
-    await api.addPlace(data).then((newCard) => {
-      setCards([newCard, ...cards]);
+  async function handleAddPlaceSubmit(place) {
+    await api.addPlace(place).then(({ data }) => {
+      setCards([data, ...cards]);
       handleClosePopup();
     });
   }

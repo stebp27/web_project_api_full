@@ -1,8 +1,11 @@
+import { useContext } from "react";
 import ImagePopup from "../ImagePopup/ImagePopup";
+import CurrentUserContext from "../../../../contexts/CurrentUserContext";
 
 function Card(props) {
-  const { name, link, isLiked } = props.card;
+  const { name, link, likes } = props.card;
   const { handleOpenPopup, onCardLike, onCardDelete } = props;
+  const { currentUser } = useContext(CurrentUserContext);
 
   const imageComponent = {
     children: <ImagePopup card={props.card} />,
@@ -10,7 +13,7 @@ function Card(props) {
 
   // Verifica si el usuario actual le ha dado "like" a la tarjeta
   const cardLikeButtonClassName = `card__like-button ${
-    isLiked ? "card__like-button_is-active" : ""
+    likes.includes(currentUser._id) ? "card__like-button_is-active" : ""
   }`;
 
   function handleLikeClick() {
