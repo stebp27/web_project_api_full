@@ -3,7 +3,6 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 import logo from "../../images/logo.svg";
 import { useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import "./Header.css";
 import { removeToken } from "../../utils/tokens";
 
 function Header({ userLogin }) {

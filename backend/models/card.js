@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -11,8 +11,8 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: function (v) {
-        //Alternative regex (more specific for test requirements):
+      validator(v) {
+        // Alternative regex (more specific for test requirements):
         // /^https?:\/\/(www\.)?[a-zA-Z0-9\.\_\-\~\:\/\?\%\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]{2,}#?$/i
         return /^https?:\/\/(www\.)?\S{3,}#?$/i.test(v);
       },
@@ -21,13 +21,13 @@ const cardSchema = new mongoose.Schema({
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: 'user',
     required: true,
   },
   likes: {
     type: Array,
     of: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: 'user',
     required: true,
     default: [],
   },
@@ -37,4 +37,4 @@ const cardSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("card", cardSchema);
+module.exports = mongoose.model('card', cardSchema);

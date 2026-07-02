@@ -1,0 +1,20 @@
+# Dependencias
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Variables de entorno
+.env
+.env.*
+
+# Cachés
+.cache/
+.eslintcache
+
+# Git
+.git/
+
+# Lockfiles
+package-lock.json

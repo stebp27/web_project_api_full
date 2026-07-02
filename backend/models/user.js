@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
+const mongoose = require('mongoose');
+const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -7,10 +7,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     validate: {
-      validator: function (v) {
+      validator(v) {
         return validator.isEmail(v);
       },
-      message: () => `This is not a valid email!`,
+      message: () => 'This is not a valid email!',
     },
   },
   password: {
@@ -20,23 +20,23 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    default: "Jacques Cousteau",
+    default: 'Jacques Cousteau',
     minlength: 2,
     maxlength: 30,
   },
   about: {
     type: String,
-    default: "Explorador",
+    default: 'Explorador',
     minlength: 2,
     maxlength: 30,
   },
   avatar: {
     type: String,
     default:
-      "https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg",
+      'https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg',
     validate: {
-      validator: function (v) {
-        //Alternative regex (more specific for test requirements):
+      validator(v) {
+        // Alternative regex (more specific for test requirements):
         // /^https?:\/\/(www\.)?[a-zA-Z0-9\.\_\-\~\:\/\?\%\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]{2,}#?$/i
         return /^https?:\/\/(www\.)?\S{3,}#?$/i.test(v);
       },
@@ -45,4 +45,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model('user', userSchema);
