@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const NotFoundError = require("../errors/not-found-err");
 const BadRequestError = require("../errors/bad-request-err");
 const UnauthorizedError = require("../errors/unauthorized-err");
+const ConflictError = require("../errors/conflict-err");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -61,6 +62,9 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === "ValidationError") {
         return next(new BadRequestError("Invalid Data"));
+      }
+      if (err.code === 11000) {
+        return next(new ConflictError("Email already exists"));
       }
       next(err);
     });
