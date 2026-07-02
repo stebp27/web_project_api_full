@@ -7,6 +7,10 @@ const Register = ({ handleRegistration }) => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,11 +18,20 @@ const Register = ({ handleRegistration }) => {
       ...prevData,
       [name]: value,
     }));
+
+    setError((prevErr) => ({ ...prevErr, [name]: e.target.validationMessage }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     handleRegistration(data);
+  };
+
+  const hasErrors = () => {
+    return (
+      Object.values(error).some((e) => e !== "") ||
+      Object.values(data).some((d) => d === "")
+    );
   };
 
   return (
@@ -35,6 +48,9 @@ const Register = ({ handleRegistration }) => {
             value={data.email}
             onChange={handleChange}
           />
+          {error.email && (
+            <span className="register__error">{error.email}</span>
+          )}
           <input
             id="password"
             required
@@ -44,8 +60,15 @@ const Register = ({ handleRegistration }) => {
             value={data.password}
             onChange={handleChange}
           />
+          {error.password && (
+            <span className="register__error">{error.password}</span>
+          )}
           <div className="register__button-container">
-            <button type="submit" className="register__link">
+            <button
+              type="submit"
+              className="register__submit"
+              disabled={hasErrors()}
+            >
               Regístrate
             </button>
           </div>

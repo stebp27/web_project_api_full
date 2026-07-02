@@ -4,20 +4,35 @@ import CurrentUserContext from "../../../../../contexts/CurrentUserContext";
 function EditProfile() {
   const { currentUser, handleUpdateUser } = useContext(CurrentUserContext);
 
-  const [name, setName] = useState(currentUser.name);
-  const [description, setDescription] = useState(currentUser.about);
+  const [data, setData] = useState({
+    name: currentUser.name,
+    about: currentUser.about,
+  });
+  const [error, setError] = useState({
+    name: "",
+    about: "",
+  });
 
-  function handleNameChange(e) {
-    setName(e.target.value);
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
 
-  function handleDescriptionChange(e) {
-    setDescription(e.target.value);
-  }
+    setError((prevErr) => ({ ...prevErr, [name]: e.target.validationMessage }));
+  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    handleUpdateUser({ name, about: description });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleUpdateUser(data);
+  };
+
+  const hasErrors = () => {
+    return (
+      Object.values(error).some((e) => e !== "") ||
+      Object.values(data).some((d) => d === "")
+    );
   };
 
   return (
@@ -37,24 +52,36 @@ function EditProfile() {
         required
         minLength="2"
         maxLength="40"
-        value={name}
-        onChange={handleNameChange}
+        value={data.name}
+        onChange={handleChange}
       />
-      <span className="edit-profile-name-input-error popup__input-error"></span>
+      {error.name && (
+        <span className="edit-profile-name-input-error popup__input-error">
+          {error.name}
+        </span>
+      )}
       <input
         className="popup__input popup__input_type_description"
-        name="description"
+        name="about"
         id="edit-profile-description"
         placeholder="Acerca de mí"
         type="text"
         required
         minLength="2"
         maxLength="200"
-        value={description}
-        onChange={handleDescriptionChange}
+        value={data.about}
+        onChange={handleChange}
       />
-      <span className="edit-profile-description-input-error popup__input-error"></span>
-      <button className="button popup__button popup__submit" type="submit">
+      {error.about && (
+        <span className="edit-profile-description-input-error popup__input-error">
+          {error.about}
+        </span>
+      )}
+      <button
+        className="button popup__button popup__submit"
+        type="submit"
+        disabled={hasErrors()}
+      >
         Guardar
       </button>
     </form>

@@ -4,21 +4,36 @@ import CurrentUserContext from "../../../../../contexts/CurrentUserContext";
 function NewCard() {
   const { handleAddPlaceSubmit } = useContext(CurrentUserContext);
 
-  const [name, setName] = useState("");
-  const [link, setLink] = useState("");
+  const [data, setData] = useState({
+    name: "",
+    link: "",
+  });
+  const [error, setError] = useState({
+    name: "",
+    link: "",
+  });
 
-  function handleNameChange(e) {
-    setName(e.target.value);
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
 
-  function handleLinkChange(e) {
-    setLink(e.target.value);
-  }
+    setError((prevErr) => ({ ...prevErr, [name]: e.target.validationMessage }));
+  };
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    handleAddPlaceSubmit({ name, link });
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleAddPlaceSubmit(data);
+  };
+
+  const hasErrors = () => {
+    return (
+      Object.values(error).some((e) => e !== "") ||
+      Object.values(data).some((d) => d === "")
+    );
+  };
 
   return (
     <form
@@ -31,33 +46,37 @@ function NewCard() {
       <label className="popup__field">
         <input
           className="popup__input popup__input_type_card-name"
-          id="card-name"
+          id="name"
           maxLength="30"
           minLength="1"
-          name="card-name"
+          name="name"
           placeholder="Title"
           required
           type="text"
-          value={name}
-          onChange={handleNameChange}
+          value={data.name}
+          onChange={handleChange}
         />
-        <span className="popup__error" id="card-name-error"></span>
+        {error.name && <span className="popup__input-error">{error.name}</span>}
       </label>
       <label className="popup__field">
         <input
           className="popup__input popup__input_type_url"
-          id="card-link"
+          id="link"
           name="link"
           placeholder="Image link"
           required
           type="url"
-          value={link}
-          onChange={handleLinkChange}
+          value={data.link}
+          onChange={handleChange}
         />
-        <span className="popup__error" id="card-link-error"></span>
+        {error.link && <span className="popup__input-error">{error.link}</span>}
       </label>
 
-      <button className="button popup__button" type="submit">
+      <button
+        className="button popup__button"
+        type="submit"
+        disabled={hasErrors()}
+      >
         Guardar
       </button>
     </form>

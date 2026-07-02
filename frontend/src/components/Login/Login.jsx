@@ -7,6 +7,10 @@ const Login = ({ handleLogin }) => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,11 +18,20 @@ const Login = ({ handleLogin }) => {
       ...prevData,
       [name]: value,
     }));
+
+    setError((prevErr) => ({ ...prevErr, [name]: e.target.validationMessage }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     handleLogin(data);
+  };
+
+  const hasErrors = () => {
+    return (
+      Object.values(error).some((e) => e !== "") ||
+      Object.values(data).some((d) => d === "")
+    );
   };
 
   return (
@@ -35,6 +48,7 @@ const Login = ({ handleLogin }) => {
             value={data.email}
             onChange={handleChange}
           />
+          {error.email && <span className="login__error">{error.email}</span>}
           <input
             id="password"
             required
@@ -44,8 +58,15 @@ const Login = ({ handleLogin }) => {
             value={data.password}
             onChange={handleChange}
           />
+          {error.password && (
+            <span className="login__error">{error.password}</span>
+          )}
           <div className="login__button-container">
-            <button type="submit" className="login__link">
+            <button
+              type="submit"
+              className="login__submit"
+              disabled={hasErrors()}
+            >
               Iniciar sesión
             </button>
           </div>
