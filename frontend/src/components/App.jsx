@@ -18,14 +18,15 @@ function App() {
   const [currentUser, setCurrentUser] = useState({ name: "", about: "" });
   const [userLogin, setUserLogin] = useState({ email: "" });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [registerSuccess, setRegisterSuccess] = useState(null);
   const [token, setToken] = useState("");
 
   const [popup, setPopup] = useState(null);
   const [cards, setCards] = useState([]);
 
-  const infoTooltip = {
-    children: <InfoTooltip registerSuccess={registerSuccess} />,
+  const handleOpenInfoTooltip = (status) => {
+    handleOpenPopup({
+      children: <InfoTooltip status={status} />,
+    });
   };
 
   useEffect(() => {
@@ -73,21 +74,22 @@ function App() {
     auth
       .register(email, password)
       .then(() => {
-        setRegisterSuccess(true);
+        handleOpenInfoTooltip({
+          isOpen: true,
+          isSuccess: true,
+          message: "¡Correcto! Ya estás registrado.",
+        });
         navigate("/signin");
       })
       .catch((e) => {
-        setRegisterSuccess(false);
+        handleOpenInfoTooltip({
+          isOpen: true,
+          isSuccess: false,
+          message: "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
+        });
         console.error;
       });
   };
-
-  // Used to wait for var change before displaying popup "InfoTooltip"
-  useEffect(() => {
-    if (registerSuccess !== null) {
-      handleOpenPopup(infoTooltip);
-    }
-  }, [registerSuccess]);
 
   const handleLogin = ({ email, password }) => {
     if (!email || !password) {
@@ -107,12 +109,26 @@ function App() {
             .then(({ data }) => {
               setIsLoggedIn(true);
               setUserLogin({ email: data.email });
+              handleOpenInfoTooltip({
+                isOpen: true,
+                isSuccess: true,
+                message: "¡Correcto! Bienvenido.",
+              });
               navigate("/");
             })
-            .catch(console.error);
+            .catch((e) => {
+              console.error;
+            });
         }
       })
-      .catch(console.error);
+      .catch((e) => {
+        handleOpenInfoTooltip({
+          isOpen: true,
+          isSuccess: false,
+          message: "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
+        });
+        console.error;
+      });
   };
 
   function handleOpenPopup(popup) {
